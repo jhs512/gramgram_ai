@@ -17,6 +17,10 @@ public class SecurityConfig {
                                 .loginPage("/account/login") // GET
                                 .loginProcessingUrl("/account/login") // POST
                 )
+                .oauth2Login(
+                        oauth2Login -> oauth2Login
+                                .loginPage("/account/login")
+                )
                 .logout(
                         logout -> logout
                                 .logoutUrl("/account/logout")
