@@ -1,20 +1,20 @@
-package com.ll.gramgram_ai.boundedContext.member.service;
+package com.ll.gramgram_ai.boundedContext.account.service;
 
+import com.ll.gramgram_ai.base.security.SecurityUser;
 import com.ll.gramgram_ai.boundedContext.member.entity.Member;
 import com.ll.gramgram_ai.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional(readOnly = false)
 public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
@@ -22,7 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByUsername(username).get();
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        return new User(member.getUsername(), member.getPassword(), authorities);
+        return SecurityUser.from(member);
     }
 }

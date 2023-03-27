@@ -28,4 +28,14 @@ public class MemberService {
     public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
+
+    public Member createWithSocialLogin(String accountProviderTypeCode, String username) {
+        Member member = Member
+                .builder()
+                .accountProviderTypeCode(accountProviderTypeCode)
+                .username(username)
+                .build();
+
+        return memberRepository.save(member);
+    }
 }
